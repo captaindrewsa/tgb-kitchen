@@ -7,7 +7,6 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from app.config import load_config
 from app.handlers.common import register_handler_common
-from app.handlers.database import database
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +32,6 @@ async def main():
     # Объявление и инициализация объектов бота, диспетчера и бд
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher(bot, storage=MemoryStorage())
-    db = database()
 
     # Регистрация хэндлеров
     register_handler_common(dp)

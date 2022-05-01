@@ -1,11 +1,10 @@
-
-from atexit import register
-from email import message_from_string
-from os import stat
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text, IDFilter
+from app.handlers.db_control import db
+
+db = db()
 
 class AddNewRecipe(StatesGroup):
     waiting_for_recipe_name = State()
@@ -40,7 +39,7 @@ async def recipe_level_chosen(message: types.Message, state: FSMContext):
         await state.finish()
         await message.answer("Вы прекратили добавление рецепта")
     else:
-        await state.update_data(recipe_level = message.text)
+        await state.update_data(recipe_level = int(message.text))
         await message.answer("Теперь введите краткий рецепт: ")
         await AddNewRecipe.waiting_for_recipe_text.set()
 
@@ -55,6 +54,8 @@ async def recipe_text_chosen(message: types.Message, state: FSMContext):
         user_data = await state.get_data()
         await message.answer(f"Вы добавили:\nНазвание: {user_data['recipe_name']}\nСложность: {user_data['recipe_level']}\nРецепт:\n{user_data['recipe_text']}")
         await state.finish()
+        db.add_recipe(user_data)
+
 
 
 
