@@ -1,24 +1,46 @@
-from unittest import skip
-from aiogram import Bot, Dispatcher, executor, types
+import asyncio
+import imp
 import logging
-from func.defs import *
-from func.token import token
-from func.database import database
 
-#Создали бота
-bot = Bot(token=token)
-dp = Dispatcher(bot)
-logging.basicConfig(level=logging.INFO)
+from aiogram import Bot, Dispatcher
+from aiogram.types import BotCommand
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-#Создали базу данных
-db = database()
-db.init()
+from app.config import load_config
+from app.handlers.common import register_handler_common
 
-#Логика бота
-@dp.message_handler(commands="start")
-async def b_start(message: types.Message):
-    await start(message)
+logger = logging.getLogger(__name__)
 
 
-if __name__== "__main__":
-    executor.start_polling(dp, skip_updates=True)
+async def set_commands(bot: Bot):
+    commands = []
+    await bot.set_my_commands(commands)
+
+async def main():
+    # Настройка логирования в stdout
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    )
+    logger.error("Starting bot")
+    
+    # Парсинг файла конфигурации
+    config = load_config("config/bot.ini")
+
+    # Объявление и инициализация объектов бота и диспетчера
+    bot = Bot(token=config.tg_bot.token)
+    dp = Dispatcher(bot, storage=MemoryStorage())
+
+    # Регистрация хэндлеров
+    register_handler_common(dp)
+
+    # Установка команд бота
+    await set_commands(bot)
+
+    # Запуск поллинга
+    # await dp.skip_updates()  # пропуск накопившихся апдейтов (необязательно)
+    await dp.start_polling()
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
