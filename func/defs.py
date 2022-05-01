@@ -1,4 +1,5 @@
 from aiogram import types
 
-def hello(message: types.Message):
-    return message.answer("Проверочка на вшивость")
+def start(message: types.Message):
+    return message.answer("Добро пожаловать в мою таверну!")
+
