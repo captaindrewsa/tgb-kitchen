@@ -12,8 +12,8 @@ dp = Dispatcher(bot)
 logging.basicConfig(level=logging.INFO)
 
 @dp.message_handler(commands="test1")
-async def cmd_test1(message: types.Message):
-    await message.reply("Test 1")
+async def b_hello(message: types.Message):
+    await hello(message)
 
 
 if __name__== "__main__":
