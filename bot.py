@@ -1,5 +1,4 @@
 import asyncio
-import imp
 import logging
 
 from aiogram import Bot, Dispatcher
@@ -8,12 +7,16 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from app.config import load_config
 from app.handlers.common import register_handler_common
+from app.handlers.database import database
 
 logger = logging.getLogger(__name__)
 
 
 async def set_commands(bot: Bot):
-    commands = []
+    commands = [
+        BotCommand(command="/start", description="Старт"),
+        BotCommand(command="/addrecipe", description="Добавить новый рецепт")
+    ]
     await bot.set_my_commands(commands)
 
 async def main():
@@ -27,9 +30,10 @@ async def main():
     # Парсинг файла конфигурации
     config = load_config("config/bot.ini")
 
-    # Объявление и инициализация объектов бота и диспетчера
+    # Объявление и инициализация объектов бота, диспетчера и бд
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher(bot, storage=MemoryStorage())
+    db = database()
 
     # Регистрация хэндлеров
     register_handler_common(dp)
