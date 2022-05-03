@@ -7,6 +7,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from app.config import load_config
 from app.handlers.common import register_handler_common
+from app.handlers.add_recipe import register_handler_add_recipe
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ async def main():
 
     # Регистрация хэндлеров
     register_handler_common(dp)
+    register_handler_add_recipe(dp)
 
     # Установка команд бота
     await set_commands(bot)
