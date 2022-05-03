@@ -1,4 +1,5 @@
 from aiogram import Dispatcher, types
+import aiogram
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text, IDFilter
@@ -10,7 +11,6 @@ async def cmd_show_recipe(message: types.Message):
     '''Показать рецепты из базы данных'''
     await message.answer("Началась функция")
     data = db.show_recipes()
-    count_rows = len(data)
     data_for_one_mess = ""
     row_in_mess = 15
     i = 0
@@ -24,7 +24,11 @@ async def cmd_show_recipe(message: types.Message):
             data_for_one_mess=''
             i=0
             continue
-        
+    try:
+        await message.answer(data_for_one_mess)
+    except aiogram.utils.exceptions.MessageTextIsEmpty:
+        pass
+    
 
 
 def register_handler_show_recipe(dp: Dispatcher):
