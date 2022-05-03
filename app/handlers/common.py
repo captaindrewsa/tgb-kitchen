@@ -20,5 +20,5 @@ async def cmd_start(message: types.Message, state: FSMContext):
 
 
 def register_handler_common(dp: Dispatcher):
-    dp.register_message_handler(cmd_start, commands="start", state="*")
+    dp.register_message_handler(cmd_start, commands="start")
 

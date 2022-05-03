@@ -11,11 +11,18 @@ class db:
             print(Error)
 
     def __create_table(self):
-        cursorObj = self.con.cursor()
-        cursorObj.execute('create table if not exists Рецепты(id INTEGER PRIMARY KEY, Название TEXT, Сложность INTEGER, Рецепт TEXT)')
+        cur = self.con.cursor()
+        cur.execute('create table if not exists Рецепты(id INTEGER PRIMARY KEY, Название TEXT, Сложность INTEGER, Рецепт TEXT)')
         self.con.commit()
     
     def add_recipe(self, user_data: dict):
-        cursorObj = self.con.cursor()
+        cur = self.con.cursor()
         data = tuple(user_data.values())
-        cursorObj.execute('INSERT INTO Рецепты(Название, Сложность, Рецепт) VALUES(?, ?, ?)', data)
+        cur.execute('INSERT INTO Рецепты(Название, Сложность, Рецепт) VALUES(?, ?, ?)', data)
+        self.con.commit()
+    
+    def show_recipes(self):
+        '''Показыавет первые рецепты из базы данных'''
+        cur = self.con.cursor()
+        cur.execute('SELECT id, Название, Сложность FROM Рецепты')
+        return cur.fetchall() 

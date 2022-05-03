@@ -11,8 +11,9 @@ class AddNewRecipe(StatesGroup):
     waiting_for_recipe_level = State()
     waiting_for_recipe_text = State()
 
-async def cmd_add_recipe_start(message: types.Message):
+async def cmd_add_recipe_start(message: types.Message, state: FSMContext):
     '''Инициация записи названия рецепта. 0'''
+    await state.finish()
     await message.answer("Вы захотели добавить рецепт! Если вы захотите отменить запись - наберите 'отмена' ")
     await message.answer("Введите название блюда: ")
     await AddNewRecipe.waiting_for_recipe_name.set()
@@ -24,7 +25,7 @@ async def recipe_name_chosen(message: types.Message, state: FSMContext):
         await message.answer("Вы прекратили добавление рецепта")
     else:
         await state.update_data(recipe_name = message.text)
-        await message.answer("Теперь введите сложность блюда от 0 до 5: ")
+        await message.answer("Теперь введите сложность блюда от 1 до 5: ")
         await AddNewRecipe.waiting_for_recipe_level.set()
 
 async def recipe_level_chosen(message: types.Message, state: FSMContext):
@@ -33,7 +34,16 @@ async def recipe_level_chosen(message: types.Message, state: FSMContext):
         await state.finish()
         await message.answer("Вы прекратили добавление рецепта")
     else:
-        await state.update_data(recipe_level = int(message.text))
+        try:
+            level = int(message.text)
+        except ValueError:
+            await message.answer("Введите число от 1 до 5, пожалуйста.")
+            return
+        if level>5 or level<0:
+            await message.answer("Введите число от 1 до 5, пожалуйста.")
+            return
+
+        await state.update_data(recipe_level = level)
         await message.answer("Теперь введите краткий рецепт: ")
         await AddNewRecipe.waiting_for_recipe_text.set()
 

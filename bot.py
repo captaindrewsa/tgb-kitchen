@@ -8,6 +8,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from app.config import load_config
 from app.handlers.common import register_handler_common
 from app.handlers.add_recipe import register_handler_add_recipe
+from app.handlers.show_recipes import register_handler_show_recipe
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +16,8 @@ logger = logging.getLogger(__name__)
 async def set_commands(bot: Bot):
     commands = [
         BotCommand(command="/start", description="Старт"),
-        BotCommand(command="/addrecipe", description="Добавить новый рецепт")
+        BotCommand(command="/addrecipe", description="Добавить новый рецепт"),
+        BotCommand(command="/showrecipes", description="Показать все рецепты")
     ]
     await bot.set_my_commands(commands)
 
@@ -37,7 +39,7 @@ async def main():
     # Регистрация хэндлеров
     register_handler_common(dp)
     register_handler_add_recipe(dp)
-
+    register_handler_show_recipe(dp)
     # Установка команд бота
     await set_commands(bot)
 
