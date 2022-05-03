@@ -4,13 +4,6 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text, IDFilter
 from app.logic.db_control import db
 
-db = db()
-
-class AddNewRecipe(StatesGroup):
-    waiting_for_recipe_name = State()
-    waiting_for_recipe_level = State()
-    waiting_for_recipe_text = State()
-
 
 async def cmd_start(message: types.Message, state: FSMContext):
     '''Первое сообщение'''
