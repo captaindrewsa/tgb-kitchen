@@ -17,7 +17,8 @@ async def set_commands(bot: Bot):
     commands = [
         BotCommand(command="/start", description="Старт"),
         BotCommand(command="/addrecipe", description="Добавить новый рецепт"),
-        BotCommand(command="/showrecipes", description="Показать все рецепты")
+        BotCommand(command="/showrecipes", description="Показать все рецепты"),
+        BotCommand(command="/randomrecipe", description="Получить случайный рецепт")
     ]
     await bot.set_my_commands(commands)
 
