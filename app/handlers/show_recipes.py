@@ -1,9 +1,10 @@
 from aiogram import Dispatcher, types
 import aiogram
-from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher import FSMContext, filters
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text, IDFilter
 from app.logic.db_control import db
+import re
 
 db = db()
 
@@ -70,4 +71,4 @@ async def choice_recipe(message:types.Message):
 def register_handler_show_recipe(dp: Dispatcher):
     dp.register_message_handler(cmd_show_recipe, commands="showrecipes")
     dp.register_message_handler(cmd_get_random_recipe, commands="randomrecipe")
-    dp.register_message_handler(choice_recipe)
+    dp.register_message_handler(choice_recipe, filters.Regexp(r'[^\d]+'))
