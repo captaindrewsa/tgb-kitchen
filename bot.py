@@ -41,6 +41,7 @@ async def main():
     register_handler_common(dp)
     register_handler_add_recipe(dp)
     register_handler_show_recipe(dp)
+    
     # Установка команд бота
     await set_commands(bot)
 

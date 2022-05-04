@@ -1,8 +1,9 @@
-from imp import is_frozen_package
-from operator import truediv
+from queue import Empty
 import sqlite3
 from sqlite3 import Error
 import random as rnd
+
+from pkg_resources import empty_provider
 
 class db:
     con = 0 
@@ -27,15 +28,9 @@ class db:
         cur.execute('INSERT INTO Рецепты(Название, Сложность, Рецепт) VALUES(?, ?, ?)', data)
         self.con.commit()
     
-    def show_recipes(self):
-        '''Показыавет рецепты из базы данных'''
-        cur = self.con.cursor()
-        cur.execute('SELECT id, Название, Сложность FROM Рецепты')
-        return cur.fetchall()
-    
-    def show_recipes(self, count = None):
-        '''Показыавет count случайных рецептов из базы данных'''
-        if count!=None:   
+    def show_recipes(self, count:int = None, rnd_choice=False):
+        if count!=None and rnd_choice==True:   
+            '''Показыавет count случайных рецептов из базы данных'''
             cur = self.con.cursor()
             cur.execute('SELECT COUNT(*) FROM Рецепты')
             count_recipes = int(cur.fetchall()[0][0])
@@ -47,8 +42,27 @@ class db:
                     continue
             cur.execute('SELECT id, Название, Сложность FROM Рецепты WHERE id IN (%s)' % ','.join('?'*len(list_id)), list_id)
             return cur.fetchall()
+        
+        elif count==None and rnd_choice==False:
+            '''Показыавет рецепты из базы данных'''
+            cur = self.con.cursor()
+            cur.execute('SELECT id, Название, Сложность FROM Рецепты')
+            return cur.fetchall()
+        
+        elif count!=None and rnd_choice==False:
+            '''Показыавет рецепт из базы данных по id'''
+            cur = self.con.cursor()
+            cur.execute('SELECT id, Название, Сложность, Рецепт FROM Рецепты WHERE id = ?', (count,))
+            return cur.fetchall()
 
+
+    # def edit_recipe(self, id:int, cell: str, value):
+    #     '''Редактирует выбранное поле'''
+    #     cur = self.con.cursor()
+    #     if cell.lower() == 'сложность':
+    #         pass
+    #     pass
 
 if __name__ == '__main__':
     db = db()
-    print(db.show_recipes(2))
+    print(db.show_recipes(6))

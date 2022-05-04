@@ -31,7 +31,7 @@ async def cmd_show_recipe(message: types.Message):
 async def cmd_get_random_recipe(message: types.Message):
     '''Выдает случайный рецепт из базы данных'''
     count_random_recipes = 1
-    data = db.show_recipes(count_random_recipes)
+    data = db.show_recipes(count_random_recipes, rnd_choice=True)
     data_for_one_mess = ""
     if count_random_recipes<15:
         row_in_mess = count_random_recipes
@@ -53,7 +53,21 @@ async def cmd_get_random_recipe(message: types.Message):
     except aiogram.utils.exceptions.MessageTextIsEmpty:
         pass
 
+async def choice_recipe(message:types.Message):
+    '''Показыавет выбранный рецепт'''
+    data = db.show_recipes(int(message.text), rnd_choice=False)
+    if len(data) != 0:
+        data_for_one_mess = ""
+        for elem in data:
+            data_for_one_mess = "{0}. {1}. ".format(elem[0],elem[1])
+            data_for_one_mess += (elem[2]*'\U00002B50')+'\n'
+            data_for_one_mess += elem[3]
+            await message.answer(data_for_one_mess)
+    else:
+            await message.answer("Такого номера в базе нет")
+
 
 def register_handler_show_recipe(dp: Dispatcher):
     dp.register_message_handler(cmd_show_recipe, commands="showrecipes")
     dp.register_message_handler(cmd_get_random_recipe, commands="randomrecipe")
+    dp.register_message_handler(choice_recipe)

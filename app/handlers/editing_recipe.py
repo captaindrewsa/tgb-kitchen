@@ -8,11 +8,12 @@ from app.logic.db_control import db
 
 db = db()
 
-async def cmd_get_random_recipe(message: types.Message):
-    '''Выдает случайный рецепт из базы данных'''
+async def cmd_edit_recipe(message: types.Message):
+    '''Выбирает и редактирует рецепт'''
+    
     
     pass
 
 
 def register_handler_show_recipe(dp: Dispatcher):
-    dp.register_message_handler(cmd_get_random_recipe, commands="randomrecipe")
+    dp.register_message_handler(cmd_edit_recipe, commands="editrecipe")
