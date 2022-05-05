@@ -1,9 +1,7 @@
-from queue import Empty
 import sqlite3
 from sqlite3 import Error
 import random as rnd
 
-from pkg_resources import empty_provider
 
 class db:
     con = 0 

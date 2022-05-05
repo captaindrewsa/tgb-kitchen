@@ -17,3 +17,8 @@ async def cmd_edit_recipe(message: types.Message):
 
 def register_handler_show_recipe(dp: Dispatcher):
     dp.register_message_handler(cmd_edit_recipe, commands="editrecipe")
+
+
+if __name__ == "__main__":
+
+    pass
