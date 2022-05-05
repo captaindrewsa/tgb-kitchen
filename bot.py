@@ -9,6 +9,7 @@ from app.config import load_config
 from app.handlers.common import register_handler_common
 from app.handlers.add_recipe import register_handler_add_recipe
 from app.handlers.show_recipes import register_handler_show_recipe
+from app.handlers.editing_recipe import register_handler_editing_recipe
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,8 @@ async def main():
     register_handler_common(dp)
     register_handler_add_recipe(dp)
     register_handler_show_recipe(dp)
+    register_handler_editing_recipe(dp)
+    
     
     # Установка команд бота
     await set_commands(bot)

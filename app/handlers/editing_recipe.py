@@ -1,3 +1,4 @@
+from email import message
 from os import sync
 from aiogram import Dispatcher, types
 import aiogram
@@ -11,12 +12,11 @@ db = db()
 async def cmd_edit_recipe(message: types.Message):
     '''Выбирает и редактирует рецепт'''
     
-    
     pass
 
 
-def register_handler_show_recipe(dp: Dispatcher):
-    dp.register_message_handler(cmd_edit_recipe, commands="editrecipe")
+def register_handler_editing_recipe(dp: Dispatcher):
+    dp.register_message_handler(cmd_edit_recipe, aiogram.dispatcher.filters.IsReplyFilter)
 
 
 if __name__ == "__main__":
