@@ -59,11 +59,15 @@ class db:
         cur = self.con.cursor()
         if cell.lower() == 'название':
             cur.execute('UPDATE Рецепты SET Название = ? WHERE id = ?', (value, id,))
-        if cell.lower() == 'сложность':
+            self.con.commit()
+        elif cell.lower() == 'сложность' and 0<int(value)<=5:
             cur.execute('UPDATE Рецепты SET Сложность = ? WHERE id = ?', (int(value), id,))
-        if cell.lower() == 'рецепт':
+            self.con.commit()
+        elif cell.lower() == 'рецепт':
             cur.execute('UPDATE Рецепты SET Рецепт = ? WHERE id = ?', (value, id,))
-        self.con.commit()
+            self.con.commit()
+        else:
+            return Error
 
 if __name__ == '__main__':
     db = db()

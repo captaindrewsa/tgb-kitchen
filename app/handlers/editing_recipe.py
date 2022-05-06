@@ -1,3 +1,4 @@
+from lib2to3.pytree import Base
 from aiogram import Dispatcher, types
 from app.logic.db_control import db
 import re
@@ -43,14 +44,13 @@ db = db()
 async def edit_recipe(message: types.Message):
     if message.reply_to_message and re.match(re.compile('[0-9]'),message.reply_to_message.text):
         list_data = message.text.split(": ")
-        if list_data[0].lower() == 'сложность' and 0>int(list_data[1])>5:
-            await message.answer("Значение сложности должно быть в диапазоне от 0 до 5")
-        else:
-            list_data.append(re.findall(re.compile('[0-9]'), message.reply_to_message.text)[0])
-
+        list_data.append(re.findall(re.compile('[0-9]'), message.reply_to_message.text)[0])
+        try:
             db.edit_recipe(list_data[1], list_data[2] , list_data[0])
-            await message.answer("Данные изменены!")
-
+        except BaseException:
+            await message.answer("Данные введены не корректно")
+        else:
+            await message.answer("Данные были изменены")
 
 
 
