@@ -129,6 +129,5 @@ dmypy.json
 .pyre/
 
 bot.ini
-.db
-.db-journal
-config.py
+*.db
+*.db-journal
