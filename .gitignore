@@ -131,3 +131,4 @@ dmypy.json
 bot.ini
 .db
 .db-journal
+config.py
