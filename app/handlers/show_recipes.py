@@ -71,7 +71,7 @@ async def choice_recipe(message:types.Message):
 def register_handler_show_recipe(dp: Dispatcher):
     dp.register_message_handler(cmd_show_recipe, commands="showrecipes")
     dp.register_message_handler(cmd_get_random_recipe, commands="randomrecipe")
-    dp.register_message_handler(choice_recipe, regexp=re.compile('[0-9]+'))
+    dp.register_message_handler(choice_recipe, regexp='^\d+$')
 
 if __name__ == "__main__":
 

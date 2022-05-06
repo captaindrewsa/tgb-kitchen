@@ -14,7 +14,7 @@ class AddNewRecipe(StatesGroup):
 async def cmd_add_recipe_start(message: types.Message, state: FSMContext):
     '''Инициация записи названия рецепта. 0'''
     await state.finish()
-    await message.answer("Вы захотели добавить рецепт! Если вы захотите отменить запись - наберите 'отмена' ")
+    await message.answer("Вы захотели добавить/обновить рецепт! Если вы захотите отменить запись - наберите 'отмена' ")
     await message.answer("Введите название блюда: ")
     await AddNewRecipe.waiting_for_recipe_name.set()
 

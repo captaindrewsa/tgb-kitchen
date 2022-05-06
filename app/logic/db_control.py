@@ -54,12 +54,16 @@ class db:
             return cur.fetchall()
 
 
-    # def edit_recipe(self, id:int, cell: str, value):
-    #     '''Редактирует выбранное поле'''
-    #     cur = self.con.cursor()
-    #     if cell.lower() == 'сложность':
-    #         pass
-    #     pass
+    def edit_recipe(self, value:str, id:int, cell: str):
+        '''Редактирует выбранное поле рецепта'''
+        cur = self.con.cursor()
+        if cell.lower() == 'название':
+            cur.execute('UPDATE Рецепты SET Название = ? WHERE id = ?', (value, id,))
+        if cell.lower() == 'сложность':
+            cur.execute('UPDATE Рецепты SET Сложность = ? WHERE id = ?', (int(value), id,))
+        if cell.lower() == 'рецепт':
+            cur.execute('UPDATE Рецепты SET Рецепт = ? WHERE id = ?', (value, id,))
+        self.con.commit()
 
 if __name__ == '__main__':
     db = db()
